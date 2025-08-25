@@ -1,0 +1,29 @@
+Instantaneous transition between unspliced and spliced
+
+Long-term modeling difficult due to differing turnover rates in protein products; typical applications have used cells measured on relatively short time intervals (<24 hrs)
+
+No incorporation of feedback networks in gene expression
+
+Poor standards for incorporation of orthogonal data which may confound signal (m6A, PTMs, etc…)
+
+Lack of consistentency in terminology to describe different phenotypic states
+
+Lack of consistency in clustering rules across different RNA velocity engines
+
+gene set enrichment analysis doesn't necessarily give precise interpretation
+
+
+
+
+
+----------------
+differences between models
+ - We infer the gene-specific reaction rates of transcription, splicing and degradation and an underlying gene-shared latent time in an efficient expectation-maximization (EM) framework. The inferred latent time represents the cell’s internal clock, which accurately describes the cell’s position in the underlying biological process. In contrast to existing similarity-based pseudo-time methods, this latent time is grounded only on transcriptional dynamics and accounts for speed and direction of motion.
+ - steady state assumes constant splicing rate across all genes
+ - dynamic assumes individual genes have their own transcript, splicing, and degradation
+
+
+slide number
+------------
+10 - which cells? mouse liver cells 24h
+22 - 2^7 - 1 = 127 "quasi-isoforms"

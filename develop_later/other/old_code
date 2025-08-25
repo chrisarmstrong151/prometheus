@@ -1,0 +1,69 @@
+# Required for data processing
+import pandas as pd
+import numpy as np
+
+# Required for annotation data for single-cell
+import anndata as ad
+
+# Required for single-cell RNA velocity analysis
+import scvelo as scv
+import cellrank as cr
+
+# Required for creating interactive visualizations
+import plotly.express as px
+
+class UMAP3DPlot:
+    """
+    A class to encapsulate the process of creating and saving a 3D UMAP plot from an h5ad file.
+    """
+    def __init__(self, h5ad_file, html_output_file):
+        """
+        Initialize the UMAP3DPlot object with the input and output file paths.
+       
+        Parameters:
+        h5ad_file (str): The path to the h5ad file to be read.
+        html_output_file (str): The path to save the output HTML file to.
+        """
+        self.h5ad_file = h5ad_file
+        self.html_output_file = html_output_file
+
+    def create_umap_3d_plot(self, scv_verbosity=3, cr_verbosity=2):
+        """
+        Read the h5ad file, create a 3D UMAP plot, customize the layout,
+        export the plot to an HTML file, and display the plot.
+        """
+        # Set verbosity level for scvelo and cellrank
+        scv.settings.verbosity = scv_verbosity
+        cr.settings.verbosity = cr_verbosity
+       
+        # Read the h5ad file
+        adata = sc.read_h5ad(self.h5ad_file)
+       
+        # Create a 3D scatter plot using plotly
+        fig = px.scatter_3d(
+            adata.obsm["X_umap"], x=0, y=1, z=2,
+            color=adata.obs["seurat_clusters"].astype(str),
+            labels={"color": "Cluster"},
+        )
+       
+        # Customize the layout of the plot
+        fig.update_layout(
+            title="UMAP 3D Plot",
+            width=800,
+            height=800,
+            scene=dict(
+                xaxis=dict(title="UMAP 1"),
+                yaxis=dict(title="UMAP 2"),
+                zaxis=dict(title="UMAP 3"),
+            ),
+        )
+       
+        # Save the plot as an HTML file
+        fig.write_html(self.html_output_file)
+
+        # Display the plot
+        fig.show()
+
+# Usage
+plotter = UMAP3DPlot('path_to_your_file/DiabetesST2UMAP.combined_AD3D.h5ad', 'output_file_name.html')
+plotter.create_umap_3d_plot(-1, 1)
